@@ -1,3 +1,6 @@
+from webbrowser import get
+
+
 def alak(n):
     board = newBoard(n)
     display(board, n)
@@ -93,6 +96,13 @@ def put(board, n, player, removed, i):
     capture_enemy(board, i, player, removed)
 
 
+def get_next_index(board, index):
+    if index < 0:
+        return len(board) + index
+    elif index > len(board):
+        return len(board) - index;
+    return index
+
 def capture_enemy(board, i, player, removed):
     pawn = ['.', 'x', 'o']
     capturedLeft = []
@@ -100,23 +110,32 @@ def capture_enemy(board, i, player, removed):
     player_pawn = pawn[player]
     enemy_pawn = pawn[3 - player]
     # TO THE LEFT
-    for a in range(i - 1, -1, -1):
-        if board[a] == enemy_pawn:
-            capturedLeft.append(a)
-        elif board[a] == pawn[0]:
+    L = i-1;     #0 1 2 3 4 5 6 7
+    while(L!=i):
+        L = get_next_index(board, L)
+        if board[L] == enemy_pawn:
+            capturedLeft.append(L)
+        elif board[L] == pawn[0]:
             capturedLeft = []
             break
-        elif board[a] == player_pawn or (a == 0 and board[a] == enemy_pawn):
+        elif board[L] == player_pawn:
             break
-    # TO THE RIGHT
-    for b in range(i + 1, len(board), 1):
-        if board[b] == enemy_pawn:
-            capturedRight.append(b)
-        elif board[b] == pawn[0]:
+        L = - 1
+
+    #RIGHT
+    L = i + 1;
+    while(L!=i):
+        L = get_next_index(board, L)
+        if board[L] == enemy_pawn:
+            capturedRight.append(L)
+        elif board[L] == pawn[0]:
             capturedRight = []
             break
-        elif board[b] == player_pawn or (b == len(board) - 1 and board(len(board) - 1) == enemy_pawn):
+        elif board[L] == player_pawn:
             break
+        L = + 1
+
+
     print("displaying captured by player", player)
     for c in capturedLeft + capturedRight:
         board[c] = pawn[0]
