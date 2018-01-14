@@ -10,6 +10,7 @@ def alak(n):
             player = 1
             print('Player 1')
             p1 = select(board, n, player, removed)
+            removed = removedlist(board,n)
             put(board, n, 1, removed, p1)
             display(board, n)
             won = win(board,n,player)
@@ -17,6 +18,7 @@ def alak(n):
             player = 2
             print('Player 2')
             p2 = select(board, n, player, removed)
+            removed = removedlist(board,n)
             put(board, n, 2, removed, p2)
             display(board, n)
             won = win(board, n, player)
@@ -92,11 +94,9 @@ def put(board, n, player, removed, i):
 
 
 def capture_enemy(board, i, player, removed):
-    print("capure enemy")
     pawn = ['.', 'x', 'o']
     capturedLeft = []
     capturedRight = []
-    removed = removedlist(board, len(board))
     player_pawn = pawn[player]
     enemy_pawn = pawn[3 - player]
     # TO THE LEFT
