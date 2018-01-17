@@ -1,6 +1,3 @@
-from webbrowser import get
-
-
 def alak(n):
     board = newBoard(n)
     display(board, n)
@@ -96,12 +93,17 @@ def put(board, n, player, removed, i):
     capture_enemy(board, i, player, removed)
 
 
-def get_next_index(board, index):
-    if index < 0:
-        return len(board) + index
-    elif index > len(board):
-        return len(board) - index;
-    return index
+def get_next_index(board, index, position): # (1) 2 (3) 4 5 6 7 8
+    if(position == 'LEFT'):
+        if index < 0:
+            return len(board) - 1
+        else:
+            return index - 1
+    elif(position == 'RIGHT'):
+        if(index >= len(board)):
+           return 0;
+        else:
+            return index + 1
 
 def capture_enemy(board, i, player, removed):
     pawn = ['.', 'x', 'o']
@@ -111,29 +113,30 @@ def capture_enemy(board, i, player, removed):
     enemy_pawn = pawn[3 - player]
     # TO THE LEFT
     L = i-1;     #0 1 2 3 4 5 6 7
-    while(L!=i):
-        L = get_next_index(board, L)
-        if board[L] == enemy_pawn:
-            capturedLeft.append(L)
-        elif board[L] == pawn[0]:
-            capturedLeft = []
-            break
-        elif board[L] == player_pawn:
-            break
-        L = - 1
+    while(True):
+        if L > 0:
+            if board[L] == enemy_pawn:
+                capturedLeft.append(L)
+            elif board[L] == pawn[0]:
+                capturedLeft = []
+                break
+            elif board[L] == player_pawn:
+                break
+        L = get_next_index(board, L, 'LEFT')
 
     #RIGHT
     L = i + 1;
-    while(L!=i):
-        L = get_next_index(board, L)
-        if board[L] == enemy_pawn:
-            capturedRight.append(L)
-        elif board[L] == pawn[0]:
-            capturedRight = []
-            break
-        elif board[L] == player_pawn:
-            break
-        L = + 1
+    while(True):
+        if L < len(board):
+            if board[L] == enemy_pawn:
+                capturedRight.append(L)
+            elif board[L] == pawn[0]:
+                capturedRight = []
+                break
+            elif board[L] == player_pawn:
+                break
+        L = get_next_index(board, L, 'RIGHT')
+        print("RIGHT BY :", L)
 
 
     print("displaying captured by player", player)
