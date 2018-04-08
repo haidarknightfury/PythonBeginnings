@@ -1,60 +1,24 @@
-# Modify the crawl_web procedure so that instead of just returning the
-# index, it returns an index and a graph. The graph should be a
-# Dictionary where the key:value entries are:
+#Feeling Lucky
 
-#  url: [list of pages url links to]
+#In Unit 6, we implemented a page ranking algorithm, but didn't finish the final
+#step of using it to improve our search results. For this question, you will use
+#the page rankings to produce the best output for a given query.
 
-def compute_ranks(graph):
-    d = 0.8  # damping factor
-    numloops = 10
-    ranks = {}
-    npages = len(graph)
-    for page in graph:
-        ranks[page] = 1.0 / npages
-    for i in range(0, numloops):
-        newranks = {}
-        for page in graph:
-            newrank = (1 - d) / npages
-            #Insert Code Here
-            for node in graph:
-                if page in graph[node]:
-                    newrank = newrank + d*(ranks[node]/len(graph[node]))
-            newranks[page] = newrank
-        ranks = newranks
-    return ranks
-        
+#Define a procedure, lucky_search, that takes as input an index, a ranks
+#dictionary (the result of compute_ranks), and a keyword, and returns the one
+#URL most likely to be the best site for that keyword. If the keyword does not
+#appear in the index, lucky_search should return None.
 
-def crawl_web(seed):  # returns index, graph of outlinks
-    tocrawl = [seed]
-    crawled = []
-    graph = {}  # <url>:[list of pages it links to]
-    index = {}
-    while tocrawl:
-        page = tocrawl.pop()
-        if page not in crawled:
-            content = get_page(page)
-            add_page_to_index(index, page, content)
-            outlinks = get_all_links(content)
-            if page not in graph:
-                graph[page] = outlinks
-            else:
-                for link in outlinks:
-                    if(link not in graph[page][1]):
-                        graph[page][1].append(link)
 
-            # Insert Code Here
-
-            union(tocrawl, outlinks)
-            crawled.append(page)
-    return index, graph
-
+def lucky_search(index, ranks, keyword):
+    pass
 
 cache = {
     'http://udacity.com/cs101x/urank/index.html': """<html>
 <body>
 <h1>Dave's Cooking Algorithms</h1>
 <p>
-Here are my favorite recipes:
+Here are my favorite recipies:
 <ul>
 <li> <a href="http://udacity.com/cs101x/urank/hummus.html">Hummus Recipe</a>
 <li> <a href="http://udacity.com/cs101x/urank/arsenic.html">World's Best Hummus</a>
@@ -119,9 +83,9 @@ Kathleen's Hummus Recipe
 <p>
 
 <ol>
-<li> Open a can of garbanzo beans.
+<li> Open a can of garbonzo beans.
 <li> Crush them in a blender.
-<li> Add 3 tablespoons of tahini sauce.
+<li> Add 3 tablesppons of tahini sauce.
 <li> Squeeze in one lemon.
 <li> Add salt, pepper, and buttercream frosting to taste.
 </ol>
@@ -171,8 +135,7 @@ Hummus Recipe
 def get_page(url):
     if url in cache:
         return cache[url]
-    else:
-        return None
+    return ""
 
 
 def get_next_target(page):
@@ -223,13 +186,54 @@ def lookup(index, keyword):
         return None
 
 
-index, graph = crawl_web('http://udacity.com/cs101x/urank/index.html')
-print (compute_ranks(graph))
+def crawl_web(seed):  # returns index, graph of inlinks
+    tocrawl = [seed]
+    crawled = []
+    graph = {}  # <url>, [list of pages it links to]
+    index = {}
+    while tocrawl:
+        page = tocrawl.pop()
+        if page not in crawled:
+            content = get_page(page)
+            add_page_to_index(index, page, content)
+            outlinks = get_all_links(content)
+            graph[page] = outlinks
+            union(tocrawl, outlinks)
+            crawled.append(page)
+    return index, graph
 
-if 'http://udacity.com/cs101x/urank/index.html' in graph:
-    print (graph['http://udacity.com/cs101x/urank/index.html'])
-#>>> ['http://udacity.com/cs101x/urank/hummus.html',
-#'http://udacity.com/cs101x/urank/arsenic.html',
-#'http://udacity.com/cs101x/urank/kathleen.html',
-#'http://udacity.com/cs101x/urank/nickel.html',
-#'http://udacity.com/cs101x/urank/zinc.html']
+
+def compute_ranks(graph):
+    d = 0.8  # damping factor
+    numloops = 10
+
+    ranks = {}
+    npages = len(graph)
+    for page in graph:
+        ranks[page] = 1.0 / npages
+
+    for i in range(0, numloops):
+        newranks = {}
+        for page in graph:
+            newrank = (1 - d) / npages
+            for node in graph:
+                if page in graph[node]:
+                    newrank = newrank + d * (ranks[node] / len(graph[node]))
+            newranks[page] = newrank
+        ranks = newranks
+    return ranks
+
+
+#Here's an example of how your procedure should work on the test site:
+
+#index, graph = crawl_web('http://udacity.com/cs101x/urank/index.html')
+#ranks = compute_ranks(graph)
+
+#print lucky_search(index, ranks, 'Hummus')
+#>>> http://udacity.com/cs101x/urank/kathleen.html
+
+#print lucky_search(index, ranks, 'the')
+#>>> http://udacity.com/cs101x/urank/nickel.html
+
+#print lucky_search(index, ranks, 'babaganoush')
+#>>> None
