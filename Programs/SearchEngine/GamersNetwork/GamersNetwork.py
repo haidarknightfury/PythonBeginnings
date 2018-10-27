@@ -95,6 +95,7 @@ Freda likes to play Starfleet Commander, Ninja Hamsters, Seahorse Adventures."
 
 
 def create_data_structure(string_input):
+    network = 0
     return network
 
 # ----------------------------------------------------------------------------- #
