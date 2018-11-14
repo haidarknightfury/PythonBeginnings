@@ -1,4 +1,6 @@
 def main():
+
+    # Building a tuple - statoc list
     t = ('hello', 'world', 38)
     print(t)
 
@@ -9,6 +11,7 @@ def main():
     for member in t:
         print(member, end = ' ')
     
+    # Reconstructing a tuple
     t = ('reassigning', 'to', 'a' , 'tuple')
     print(t)
 
@@ -28,8 +31,6 @@ def main():
     # Tupples - thread safe - not mutable
     # Better than list in cration time and space
     # %timeit [1,2,3,4,5] -in ipython to know creation time
-
-
 
 if __name__ == '__main__':
     main();
