@@ -77,3 +77,36 @@ module3.py
         print ('calling bar')
         bar()
 ```
+
+### Variable Scope in Python
+
+```py
+    def foo():
+    b = 300
+    def bar():
+        a = 300 
+        print('a in bar is %d' %a) # a is 300 but, global variable a is unmodified
+        print(b)
+    bar()
+
+
+if(__name__== '__main__'):
+    a = 200
+    foo()
+    print('a in main is %d' % a) # a is still 200 and not modified
+```
+
+- To be able to modify global variables - use global keyword to access global variable
+- The use of global scope should be limited in a python application - because it causes tight coupling
+
+```py
+    def foo():
+        global a 
+        a = 200
+        print (a) # a is 200
+    
+    if (__name__ == '__main__):
+        a = 300
+        foo()
+        print(a) # a is 200
+```

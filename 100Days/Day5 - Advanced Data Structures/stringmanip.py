@@ -17,7 +17,7 @@ print(str1.center(50, '*'))
 # ******************Hello World !!******************
 print(str1.rjust(50, ' ')) # Space to the right
 
-str2 = 'abc123456'
+str2 = 'abc123456 '
 print(str2[2]) #c
 print(str2[2:5]) # c12
 print(str2[2:]) # c123456
@@ -35,3 +35,8 @@ print(str2.isalnum()) #true
 
 str3 = '  Jack Bauer  '
 print(str3.strip()) #remove trailing spaces
+
+
+str4 = 'Hello '
+print(str4.join(str2))
+print(str2.join(str4))

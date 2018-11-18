@@ -67,7 +67,7 @@
 
 
 def cellular_automaton():
-
+    pass
 
 print cellular_automaton('.x.x.x.x.', 17, 2)
 #>>> xxxxxxx..

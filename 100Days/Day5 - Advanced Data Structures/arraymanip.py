@@ -3,6 +3,8 @@ def main():
     list = [1, 3, 5, 6, 7, 8, 100]
     print(list)
 
+    print()
+
     list2 = ['Hello']
     print(list2 * 5)
 
@@ -28,6 +30,8 @@ def main():
 
     list.clear()
     print(list)
+
+
 
 if __name__ == '__main__':
     main()
