@@ -20,6 +20,7 @@ class Person(object):
     def age(self, age):
         self._age = age
 
+    # To string method
     def __str__(self):
         return ('%s has age %d' % (self._name, self._age))
 
