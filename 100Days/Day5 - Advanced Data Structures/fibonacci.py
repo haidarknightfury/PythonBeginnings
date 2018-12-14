@@ -5,6 +5,7 @@ def fib(n):
         yield a
     
 def main():
+    results = []
     for val in fib(20):
         print(val)
 
